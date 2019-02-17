@@ -5,7 +5,9 @@ This file contains intiailzer, geometrical discription, render and update for th
 --Create a Ball object for OOPS using the Class library.
 Ball = Class{}
 
-function Ball:init()
+-- Initialization of the geometry, dimensions and speed. x,y,W,H are to be defined in main file for subsequent Paddle object.
+-- Here x,y,W,H are to be defined in main file for subsequent object Ball.
+function Ball:init(x,y,width,height)
     self.x = x
     self.y = y
     self.width = width
@@ -13,10 +15,10 @@ function Ball:init()
 
     self.dx = math.random(-50,50)
     self.dy = math.random(2) == 1 and -100 or 100
+    -- the above line of code is similar to the ternary operator used in C++
 end
 
-
-
+-- Reset the ball to ceter of the screen
 function Ball:reset()
     self.x = virtual_width/2
     self.y = virtual_height/2
@@ -24,13 +26,13 @@ function Ball:reset()
     self.dy = math.random(2) == 1 and -100 or 100
 end
 
-
+-- Update's the ball's position frame-by-frame.
 function Ball:update(dt)
     self.x = self.x + self.dx*dt
     self.y = self.y + self.dy*dt
 end
 
+-- Ball is simply rendered as a rectangle.
 function Ball:render()
     love.graphics.rectangle('fill',self.x,self.y,self.width,self.height)
 end
-

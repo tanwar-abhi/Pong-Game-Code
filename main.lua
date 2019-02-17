@@ -1,10 +1,10 @@
 --[[ This is my version of the main.lua file for pong6 update.
  Pong_Game_5 :: The class update.
+ Everything in lua is a table similar to how everything in MATLAB is a matrix.
 ]]
 
 
 -- Importing the necessary libraries and classes.
-
 push = require 'push'
 Class = require 'class'
 
@@ -36,11 +36,11 @@ function love.load()
 
     --initial position for render of ball and paddles at the start; inputs => (x,y,W,H)
     player1 = Paddle(1,30,5,20)
-    player2 = Paddle(virtual_width-1,virtual_height-40,5,20)
+    player2 = Paddle(virtual_width-6,virtual_height-40,5,20)
     
     ball = Ball(virtual_width/2,virtual_height/2,3,3)
 
-    -- gameState variable created to transion from start to play and end states during run.
+    -- gameState variable created to transition from start to play and end states during run.
     gameState = 'start'
 
 end
@@ -88,6 +88,7 @@ function love.keypressed(key)
 end
 
 -- asper function name used for drawing something on the screen, geometry of object drwan defined here.
+-- called after the update function.
 function love.draw()
     push:start()
 
@@ -104,6 +105,9 @@ function love.draw()
     -- Render paddles using subsequent classes
     player1:render()
     player2:render()
+
+    -- render ball using it's class under method
+    ball:render()
 
     push:finish()
 end

@@ -3,7 +3,8 @@
 Paddle = Class{}
 
 -- Initialization for the values of geometric dimentions and speed of the Paddle.
-function Paddle:init()
+-- dy being speed in Y-direction {paddles can only move up or down}
+function Paddle:init(x,y,width,height)
     self.x = x
     self.y = y
     self.width = width
@@ -13,12 +14,12 @@ end
 
 -- "dt" is the frame rate feeded as input so that the function is updated per frame.
 function Paddle:update(dt)
-    -- Also setting bound for the Paddles so they don't do beyond the screen size of "virtual_height".
+    -- Also setting bound for the Paddles so they don't go beyond the screen size of "virtual_height".
     if self.dy < 0 then
         self.y = math.max(0,self.y + self.dy*dt)
 
     else
-        self.y = math.min(virtual_height-self.width, self.y + self.dy*dt)
+        self.y = math.min(virtual_height-self.height, self.y + self.dy*dt)
     end
 end
 
@@ -26,4 +27,3 @@ end
 function Paddle:render()
     love.graphics.rectangle('fill',self.x,self.y,self.width,self.height)
 end
-
