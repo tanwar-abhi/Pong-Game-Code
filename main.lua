@@ -28,6 +28,12 @@ function love.load()
     -- random seed gereration for call. "os.time" is used as a reference staring point for generation of random seed
     -- since it needs an initiall reference point and os.time would be different each time we run the program.
     math.randomseed(os.time())
+    
+    love.window.setTitle('Pong')
+
+    -- Initialize score variables, used for score keeping throught the game.
+    player1Score = 0
+    player2Score = 0
 
     -- Setting up intial screen to be rendered in a small virtual dimentions, using push library to render from original
     -- dimentions to a smaller dimenion to give a retro look to game.
@@ -92,8 +98,10 @@ end
 function love.draw()
     push:start()
 
-    -- Creating a custom new font to give a retro asthetic to the game.
+    -- Creating custom new fonts to give a retro asthetic to the game.
     smallFont = love.graphics.newFont('font.ttf',8)
+    scoreFont = love.graphics.newFont('font.ttf',32)
+
     love.graphics.setFont(smallFont)
 
     if gameState == 'start' then
@@ -102,6 +110,10 @@ function love.draw()
         love.graphics.printf("Let's play",0,10,virtual_width,'center')
     end
 
+    love.graphcis.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score),virtual_width/2-30,virtual_height/3)
+    love.graphics.print(tostring(player2Score),virtual_width/2+30,virtual_height/3)
+    
     -- Render paddles using subsequent classes
     player1:render()
     player2:render()
@@ -109,5 +121,16 @@ function love.draw()
     -- render ball using it's class under method
     ball:render()
 
+    -- a simple fucntion created to display FPS on screen for references {defined at the end of code}
+    displayFPS()
+
     push:finish()
+end
+
+-- This function simply displays FPS of current state of the game.
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    -- love.grapphics.setColor(R,G,B,opaqueness)
+    love.graphics.setColor(0,255,0,255)
+    love.graphics.printf('FPS' .. tostring(love.timer.getFPS()),10,10)
 end
