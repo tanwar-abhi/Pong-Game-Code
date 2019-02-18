@@ -110,7 +110,7 @@ function love.draw()
         love.graphics.printf("Let's play",0,10,virtual_width,'center')
     end
 
-    love.graphcis.setFont(scoreFont)
+    love.graphics.setFont(scoreFont)
     love.graphics.print(tostring(player1Score),virtual_width/2-30,virtual_height/3)
     love.graphics.print(tostring(player2Score),virtual_width/2+30,virtual_height/3)
     
@@ -132,5 +132,6 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     -- love.grapphics.setColor(R,G,B,opaqueness)
     love.graphics.setColor(0,255,0,255)
-    love.graphics.printf('FPS' .. tostring(love.timer.getFPS()),10,10)
+    -- to concatenate in lua we use " .. "
+    love.graphics.print('FPS' .. tostring(love.timer.getFPS()),10,10)
 end
