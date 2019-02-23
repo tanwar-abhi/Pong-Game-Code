@@ -26,6 +26,18 @@ function Ball:reset()
     self.dy = math.random(2) == 1 and -100 or 100
 end
 
+function Ball:collides(paddle)
+    -- checks weither the right, left edge of either is farther.
+    if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then
+        return false
+    end
+    -- checks the bottom egdes of both for collison/contact
+    if self.y > paddle.y + paddle.height or paddle.y > self.y + self.height then
+        return false
+    end
+    return true
+end
+
 -- Update's the ball's position frame-by-frame.
 function Ball:update(dt)
     self.x = self.x + self.dx*dt

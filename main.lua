@@ -1,5 +1,5 @@
 --[[ This is my version of the main.lua file for pong6 update.
- Pong_Game_5 :: The class update.
+ Pong_Game_7 :: The contact and collision update.
  Everything in lua is a table similar to how everything in MATLAB is a matrix.
 ]]
 
@@ -12,11 +12,11 @@ Class = require 'class'
 require 'Paddle'
 require 'Ball'
 
-window_width = 1380
-window_height = 820
+window_width = 1280
+window_height = 720
 
-virtual_width = 432
-virtual_height = 243
+virtual_width = 435
+virtual_height = 245
 
 -- speed at which we move our Paddle, multiplied by dt.
 paddle_speed = 200
@@ -44,7 +44,7 @@ function love.load()
     player1 = Paddle(1,30,5,20)
     player2 = Paddle(virtual_width-6,virtual_height-40,5,20)
     
-    ball = Ball(virtual_width/2,virtual_height/2,3,3)
+    ball = Ball(virtual_width/2+8,virtual_height/2,3,3)
 
     -- gameState variable created to transition from start to play and end states during run.
     gameState = 'start'
@@ -53,6 +53,44 @@ end
 
 -- updates this function frame-by-frame {dt is each frame} passed in this function.
 function love.update(dt)
+    if gameState == 'play' then
+        -- detect ball collision with paddles
+        if ball:collides(player1) then
+            ball.dx = -ball.dx*1.5
+            -- shift the ball instantly to right paddle on detecting collion
+            ball.x = player1.x + 5
+            
+            -- keep velocity going but in random manner
+            if ball.dy < 0 then
+                ball.dy = -math.random(1,100)
+            else
+                ball.dy = math.random(1,100)
+            end
+        end
+
+        if ball:collides(player2) then
+            ball.dx = -ball.dx*1.5
+            ball.x = player2.x - 5
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(1,100)
+            else
+                ball.dy = math.random(1,100)
+            end
+        end
+    end
+
+    -- Detect upper and lower screen boundary collision
+    if ball.y <= 0 then
+        ball.y = 0
+        ball.dy = -ball.dy
+
+    elseif ball.y >= virtual_height then
+        ball.y = virtual_height
+        ball.dy = -ball.dy
+    end
+
+
     -- player1 and player2 movements
     if love.keyboard.isDown('w') then
         player1.dy = -paddle_speed
@@ -98,7 +136,7 @@ end
 function love.draw()
     push:start()
 
-    -- Creating custom new fonts to give a retro asthetic to the game.
+    -- Creating custom new fonts to give retro asthetics to the game.
     smallFont = love.graphics.newFont('font.ttf',8)
     scoreFont = love.graphics.newFont('font.ttf',32)
 
@@ -132,6 +170,6 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     -- love.grapphics.setColor(R,G,B,opaqueness)
     love.graphics.setColor(0,255,0,255)
-    -- to concatenate in lua we use " .. "
+    -- to concatenate string in lua we use " .. "
     love.graphics.print('FPS' .. tostring(love.timer.getFPS()),10,10)
 end
