@@ -198,3 +198,5 @@ function displayScore()
     love.graphics.print(tostring(player1Score),virtual_width/2-50,virtual_height/4-25)
     love.graphics.print(tostring(player2Score),virtual_width/2+30,virtual_height/4-25)
 end
+
+--Game state update
