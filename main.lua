@@ -32,8 +32,8 @@ function love.load()
     love.window.setTitle('Pong')
 
     -- Initialize score variables, used for score keeping throught the game.
-    player1Score = 0
-    player2Score = 0
+    player1Score = 7
+    player2Score = 7
 
     -- Setting up intial screen to be rendered in a small virtual dimentions, using push library to render from original
     -- dimentions to a smaller dimenion to give a retro look to game.
@@ -44,7 +44,7 @@ function love.load()
     player1 = Paddle(1,30,5,20)
     player2 = Paddle(virtual_width-6,virtual_height-40,5,20)
     
-    ball = Ball(virtual_width/2+8,virtual_height/2,3,3)
+    ball = Ball(virtual_width/2,virtual_height/2,3,3)
 
     -- gameState variable created to transition from start to play and end states during run.
     gameState = 'start'
@@ -100,15 +100,30 @@ function love.update(dt)
 
     -- Keeping Score and check if ball is on extreme left or right of screen.
     if ball.x <= 0 then
-        player2Score = player2Score + 1
         servingPlayer = 1
-        ball:reset()
-        gameState = 'serve'
+        player2Score = player2Score + 1
+
+        -- Check if player2 has won the game.
+        if player2Score == 10 then
+            winningPlayer = 2
+            gameState = 'end'
+        else
+            gameState = 'serve'
+            ball:reset()
+        end    
+        
     elseif ball.x >= virtual_width then
         player1Score = player1Score + 1
         servingPlayer = 2
-        ball:reset()
-        gameState = 'serve'
+
+        -- Wining check from player1.
+        if player1Score == 10 then
+            winningPlayer = 2
+            gameState = 'end'
+        else
+            gameState = 'serve'
+            ball:reset()
+        end
     end
 
     -- player1 and player2 movements
@@ -146,6 +161,19 @@ function love.keypressed(key)
             gameState = 'serve'
         elseif gameState == 'serve' then
             gameState = 'play'
+            -- If game is over reset the scores and ball to start a new game.
+        elseif gameState == 'end' then
+            gameState = 'serve'
+            ball:reset()
+            player1Score = 0
+            player2Score = 0
+
+            -- Giving serve to loosing player for next game.
+            if winningPlayer == 1 then
+                servingPlayer = 2
+            else
+                servingPlayer = 1
+            end
         end
     end
 end
@@ -165,6 +193,12 @@ function love.draw()
     elseif gameState == 'serve' then
         love.graphics.printf('Player'..tostring(servingPlayer)..' to serve',0,10,virtual_width,'center')
         love.graphics.printf('Press Enter to serve',0,20,virtual_width,'center')
+    elseif gameState == 'end' then
+        largeFont = love.graphics.newFont('font.ttf',20)
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player'..tostring(winningPlayer)..'wins!! :) ',0,10,virtual_width,'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
     end
 
     displayScore()
