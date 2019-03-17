@@ -32,8 +32,8 @@ function love.load()
     love.window.setTitle('Pong')
 
     -- Initialize score variables, used for score keeping throught the game.
-    player1Score = 8
-    player2Score = 8
+    player1Score = 0
+    player2Score = 0
 
     -- Setting up intial screen to be rendered in a small virtual dimentions, using push library to render from original
     -- dimentions to a smaller dimenion to give a retro look to game.
@@ -44,7 +44,7 @@ function love.load()
     player1 = Paddle(1,30,5,20)
     player2 = Paddle(virtual_width-6,virtual_height-40,5,20)
     
-    ball = Ball(virtual_width/2,virtual_height/2,3,3)
+    ball = Ball(virtual_width/2,virtual_height/2,4,4)
 
     -- gameState variable created to transition from start to play and end states during run.
     gameState = 'start'
