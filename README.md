@@ -1,10 +1,10 @@
-# Pong_Game_Code
+# Pong Game
 
 This repository contains code of a basic 2D Pong-game which I worked on as a side projects of game development.
 
-This is the result of my personal interest, hobby in Game code development and to better understand game development functions and algorithms.
+This is the result of my personal interest, hobby in Game development and to better understand game development codes, functions and algorithms.
 
-Lua was used for the primary language.
+**Lua** was used as the primary language for the 2D *Pong* game.
 
 `main.lua` => contains the main structure of the game which calls upon objects from the various classes 
 
@@ -16,7 +16,7 @@ Lua was used for the primary language.
 
 `class.lua` => This was an already existing library file that i downloaded from web, it helps in creating the object classes like Paddle and Ball so that the defination and calling of these can be similar to OOPS.
 
-font.ttf => This is a custom font which is intended to give a retro vibe to pong game.
+`font.ttf` => This is a custom font which is intended to give a retro vibe to pong game.
 
 ## How to run the game
 

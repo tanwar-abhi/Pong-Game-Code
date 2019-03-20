@@ -1,5 +1,5 @@
 --[[ This is my version of the main.lua file for pong6 update.
- Pong_Game_9 :: The score keeping update and game states
+ Pong_Game_11 :: The audio update
  Everything in lua is a table similar to how everything in MATLAB is a matrix.
 ]]
 
@@ -36,7 +36,6 @@ function love.load()
     player2Score = 0
 
     -- Setting up intial screen to be rendered in a small virtual dimentions, using push library to render from original
-    -- dimentions to a smaller dimenion to give a retro look to game.
     push:setupScreen(virtual_width,virtual_height,window_width,window_height,
     {fullscreen=false,resizable=false,vsync=true})
 
@@ -52,8 +51,13 @@ function love.load()
 
     -- Customized fonts for different information display
     smallFont = love.graphics.newFont('font.ttf',8)
-    largeFont = love.graphics.newFont('font.ttf',20)
+    largeFont = love.graphics.newFont('font.ttf',16)
     scoreFont = love.graphics.newFont('font.ttf',32)
+
+    -- set the sound effects, creating a table
+    sounds = {['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav','static'),
+            ['score'] = love.audio.newSource('sounds/score.wav','static'),
+            ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav','static')}
 
 end
 
@@ -80,6 +84,7 @@ function love.update(dt)
             else
                 ball.dy = math.random(10,100)
             end
+            sounds['paddle_hit']:play()
         end
 
         if ball:collides(player2) then
@@ -91,27 +96,31 @@ function love.update(dt)
             else
                 ball.dy = math.random(10,100)
             end
+            sounds['paddle_hit']:play()
         end
 
             -- Detect upper and lower screen boundary collision
         if ball.y <= 0 then
             ball.y = 0
             ball.dy = -ball.dy
+            sounds['wall_hit']:play()
         elseif ball.y >= virtual_height then
             ball.y = virtual_height
             ball.dy = -ball.dy
+            sounds['wall_hit']:play()
         end
 
             -- Keeping Score and check if ball is on extreme left or right of screen.
-         if ball.x <= 0 then
-          servingPlayer = 1
-          player2Score = player2Score + 1
+        if ball.x <= 0 then
+            servingPlayer = 1
+            player2Score = player2Score + 1
+            sounds['score']:play()
 
             -- Check if player2 has won the game.
             if player2Score == 10 then
                 winningPlayer = 2
                 gameState = 'gameOver'
-          else
+            else
                 gameState = 'serve'
                 ball:reset()
             end    
@@ -119,6 +128,7 @@ function love.update(dt)
         elseif ball.x >= virtual_width then
             player1Score = player1Score + 1
             servingPlayer = 2
+            sounds['score']:play()
 
          -- Wining check from player1.
             if player1Score == 10 then
