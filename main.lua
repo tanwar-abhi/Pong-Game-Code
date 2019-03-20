@@ -1,5 +1,4 @@
---[[ This is my version of the main.lua file for pong6 update.
- Pong_Game_11 :: The audio update
+--[[ The mighty Pong Game {with a retro nostalgia}
  Everything in lua is a table similar to how everything in MATLAB is a matrix.
 ]]
 
@@ -37,7 +36,7 @@ function love.load()
 
     -- Setting up intial screen to be rendered in a small virtual dimentions, using push library to render from original
     push:setupScreen(virtual_width,virtual_height,window_width,window_height,
-    {fullscreen=false,resizable=false,vsync=true})
+                    {fullscreen=false, resizable=true, vsync=true})
 
     --initial position for render of ball and paddles at the start; inputs => (x,y,W,H)
     player1 = Paddle(1,30,5,20)
@@ -60,6 +59,13 @@ function love.load()
             ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav','static')}
 
 end
+
+
+-- This is to enable the resizing of the screen and using push to maintain the correct aspect ratio of the game
+function love.resize(w,h)
+    push:resize(w,h)
+end
+
 
 -- updates this function frame-by-frame {dt is each frame} passed in this function.
 function love.update(dt)
