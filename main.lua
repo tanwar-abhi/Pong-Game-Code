@@ -156,13 +156,21 @@ function love.update(dt)
         player1.dy = 0
     end
 
+    --[[
     if love.keyboard.isDown('up') then
         player2.dy = -paddle_speed
     elseif love.keyboard.isDown('down') then
         player2.dy = paddle_speed
     else
         player2.dy = 0
-    end
+    end]]
+
+
+
+    -- computer play  {but it's getting a bit tought, he always returns}
+    player2.y = ball.y - 5
+
+
 
     if gameState == 'play' then
         ball:update(dt)

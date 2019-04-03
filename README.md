@@ -1,5 +1,7 @@
 # Pong Game
 
+The mighty Pong Game {with a retro nostalgia}
+
 This repository contains code of a basic 2D Pong-game which I worked on as a side projects of game development.
 
 This is the result of my personal interest, hobby in Game development and to better understand game development codes, functions and algorithms.
@@ -23,3 +25,11 @@ This is the result of my personal interest, hobby in Game development and to bet
 * First install love2d from the official love2d website.
 
 * To run the game use the command "love ." from the folder that contains all the files and subfiles.
+
+## Current Updates and work in progress {WIP}
+
+* So currently the game requires 2 players at all time, so its a dual player dame by default. 
+
+* We don't always have a friend who wants to play the game with us {being lonely}, so now i am trying to figure out how to computer to play with the player.
+
+* Next step would be to add different computer difficulty levels to make the game more interesting and competitive for the single player.
