@@ -61,7 +61,7 @@ function love.load()
 end
 
 
--- This is to enable the resizing of the screen and using push to maintain the correct aspect ratio of the game
+-- This is to enable the resizing of the screen and maintain the correct aspect ratio of the game
 function love.resize(w,h)
     push:resize(w,h)
 end
@@ -69,7 +69,8 @@ end
 
 -- updates this function frame-by-frame {dt is each frame} passed in this function.
 function love.update(dt)
-    if gameState == 'serve' then
+
+    if gameState == 'serveMP' or gameState == 'serveSP' then
         ball.dy = math.random(-50,50)
         if servingPlayer == 1 then
             ball.dx = math.random(100,150)
@@ -77,7 +78,7 @@ function love.update(dt)
             ball.dx = -math.random(100,150)
         end
 
-    elseif gameState == 'play' then
+    elseif gameState == 'multiPlay' then
         -- detect ball collision with paddles
         if ball:collides(player1) then
             ball.dx = -ball.dx*1.03
@@ -86,9 +87,9 @@ function love.update(dt)
             
             -- keep velocity going but in random manner
             if ball.dy < 0 then
-                ball.dy = -math.random(10,100)
+                ball.dy = -math.random(10,150)
             else
-                ball.dy = math.random(10,100)
+                ball.dy = math.random(10,150)
             end
             sounds['paddle_hit']:play()
         end
@@ -98,14 +99,14 @@ function love.update(dt)
             ball.x = player2.x - 5
 
             if ball.dy < 0 then
-                ball.dy = -math.random(10,100)
+                ball.dy = -math.random(10,150)
             else
-                ball.dy = math.random(10,100)
+                ball.dy = math.random(10,150)
             end
             sounds['paddle_hit']:play()
         end
 
-            -- Detect upper and lower screen boundary collision
+        -- Detect upper and lower screen boundary collision
         if ball.y <= 0 then
             ball.y = 0
             ball.dy = -ball.dy
@@ -116,18 +117,18 @@ function love.update(dt)
             sounds['wall_hit']:play()
         end
 
-            -- Keeping Score and check if ball is on extreme left or right of screen.
+        -- Keeping Score and check if ball is on extreme left or right of screen.
         if ball.x <= 0 then
             servingPlayer = 1
             player2Score = player2Score + 1
             sounds['score']:play()
 
-            -- Check if player2 has won the game.
+         -- Check if player2 has won the game.
             if player2Score == 10 then
                 winningPlayer = 2
                 gameState = 'gameOver'
             else
-                gameState = 'serve'
+                gameState = 'serveMP'
                 ball:reset()
             end    
         
@@ -141,38 +142,106 @@ function love.update(dt)
                 winningPlayer = 1
                 gameState = 'gameOver'
             else
-                gameState = 'serve'
+                gameState = 'serveMP'
                 ball:reset()
             end
         end
+
+        -- player1 and player2 movements
+        if love.keyboard.isDown('w') then
+            player1.dy = -paddle_speed
+        elseif love.keyboard.isDown('s') then
+            player1.dy = paddle_speed
+        else
+            player1.dy = 0
+        end
+
+        if love.keyboard.isDown('up') then
+            player2.dy = -paddle_speed
+        elseif love.keyboard.isDown('down') then
+            player2.dy = paddle_speed
+        else
+            player2.dy = 0
+        end
+
     end
 
-    -- player1 and player2 movements
-    if love.keyboard.isDown('w') then
-        player1.dy = -paddle_speed
-    elseif love.keyboard.isDown('s') then
-        player1.dy = paddle_speed
-    else
-        player1.dy = 0
+    if gameState == 'singlePlay' then
+
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player1.x + 4
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10,150)
+            else
+                ball.dy = math.random(10,150)
+            end
+            sounds['paddle_hit']:play()
+        end
+
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player2.x - 4
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10,150)
+            else
+                ball.dy = math.random(10,150)
+            end
+            sounds['paddle_hit']:play()
+        end
+
+        if ball.y <= 0 then
+            ball.dy = -ball.dy
+            sounds['wall_hit']:play()
+        elseif ball.y >= virtual_height then
+            ball.dy = -ball.dy
+            sounds['wall_hit']:play()
+        end
+
+
+        if ball.x < 0 then
+            player2Score = player2Score + 1
+            sounds['score']:play()
+            servingPlayer = 1
+            if player2Score == 10 then
+                winningPlayer = 2
+                gameState = 'gameOver'
+            else
+                ball:reset()
+                gameState = 'serveSP'
+            end
+        end
+
+        if ball.x > virtual_width then
+            player1Score = player1Score + 1
+            sounds['score']:play()
+            servingPlayer = 2
+            if player1Score == 10 then
+                winningPlayer = 1
+                gameState = 'gameOver'
+            else
+                ball:reset()
+                gameState = 'serveSP'
+            end
+        end
+
+        -- player1 movements
+        if love.keyboard.isDown('w') then
+            player1.dy = -paddle_speed
+        elseif love.keyboard.isDown('s') then
+            player1.dy = paddle_speed
+        else
+            player1.dy = 0
+        end
+
+        --computer play  {but it's getting a bit tought, he always returns}
+        player2.y = ball.y - 5
+
     end
 
-    --[[
-    if love.keyboard.isDown('up') then
-        player2.dy = -paddle_speed
-    elseif love.keyboard.isDown('down') then
-        player2.dy = paddle_speed
-    else
-        player2.dy = 0
-    end]]
-
-
-
-    -- computer play  {but it's getting a bit tought, he always returns}
-    player2.y = ball.y - 5
-
-
-
-    if gameState == 'play' then
+    if gameState == 'multiPlay' or gameState == 'singlePlay' then
         ball:update(dt)
     end
  
@@ -185,15 +254,23 @@ function love.keypressed(key)
     -- keys can be acessed by string names which are already defined in love and lua
     if key == 'escape' then
         love.event.quit()
+    end
+
+    if key == '1' then
+        gameState = 'singlePlay'
+    elseif key == '2' then
+        gameState = 'multiPlay'
+
+
     elseif key == 'enter' or key == 'return' then
-        if gameState == 'start' then
-            gameState = 'serve'
-        elseif gameState == 'serve' then
-            gameState = 'play'
+        if gameState == 'serveMP' then
+            gameState = 'multiPlay'
+        elseif gameState == 'serveSP' then
+            gameState = 'singlePlay'
             -- If game is over reset the scores and ball to start a new game.
         elseif gameState == 'gameOver' then
             -- Game goes into a reset phase here, reseting score and giving serve to loosing player
-            gameState = 'serve'
+            gameState = 'start'
             ball:reset()
             player1Score = 0
             player2Score = 0
@@ -222,17 +299,25 @@ function love.draw()
     love.graphics.setFont(smallFont)
 
     if gameState == 'start' then
-        love.graphics.printf('Welcome to Pong Game',0,10,virtual_width,'center')
-        love.graphics.printf('Press Enter to play Pong!',0,20,virtual_width,'center')
-    elseif gameState == 'serve' then
+        love.graphics.printf('Welcome to Pong Game!',0,10,virtual_width,'center')
+        love.graphics.printf('Select number of Pong players',0,20,virtual_width,'center')
+        love.graphics.printf('Press 1 : For single play',0,30,virtual_width/2,'center')
+        love.graphics.printf('Press 2 : For Multiplay',virtual_width/2,30,virtual_width/2,'center')
+    elseif gameState == 'serveMP' or gameState == 'serveSP' then
+        love.graphics.printf('Press Enter to serve',0,10,virtual_width,'center')
+
+    --[[elseif gameState == 'singlePlay' then
+        love.graphics.printf('Press enter to serve',0,10,virtual_width,'center')
+    elseif gameState == 'multiPlay' then
         love.graphics.printf('Player'..tostring(servingPlayer)..' to serve',0,10,virtual_width,'center')
-        love.graphics.printf('Press Enter to serve',0,20,virtual_width,'center')
+        love.graphics.printf('Press Enter to serve',0,20,virtual_width,'center')]]
+
     elseif gameState == 'gameOver' then
         love.graphics.setFont(largeFont)
         love.graphics.printf('Player'..tostring(winningPlayer)..'wins!! :) ',0,10,virtual_width,'center')
         love.graphics.setFont(smallFont)
         love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
-    end    
+    end
 
     -- Render paddles using subsequent classes
     player1:render()
