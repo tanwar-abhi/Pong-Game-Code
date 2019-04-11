@@ -244,7 +244,7 @@ function love.draw()
 
     elseif gameState == 'gameOver' then
         love.graphics.setFont(largeFont)
-        love.graphics.printf('Player'..tostring(winningPlayer)..'wins!! :) ',0,10,virtual_width,'center')
+        love.graphics.printf('Player '..tostring(winningPlayer)..' wins!! :) ',0,10,virtual_width,'center')
         love.graphics.setFont(smallFont)
         love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
     end

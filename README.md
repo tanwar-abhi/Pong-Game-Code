@@ -28,8 +28,8 @@ This is the result of my personal interest, hobby in Game development and to bet
 
 ## Current Updates and work in progress {WIP}
 
-* So currently the game requires 2 players at all time, so its a dual player game by default. 
+* So currently the game requires 2 players at all time, so its a dual player game by default. {**Implemented**}
 
-* We don't always have a friend who wants to play the game with us {being lonely}, so now i am trying to figure out how to implement computer to play with the player.
+* We don't always have a friend who wants to play the game with us {being lonely}, so now i am trying to figure out how to implement computer to play with the player. {**Done**}
 
-* Next step would be to add different computer difficulty levels to make the game more interesting and competitive for the single player.
+* Next step would be to add different computer difficulty levels to make the game more interesting and competitive for the single player. {**This is in Progress (WIP)**}
