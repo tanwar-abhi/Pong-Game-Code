@@ -200,6 +200,9 @@ function love.keypressed(key)
         gameState = 'serve'
         humanPlayers = 2
 
+    elseif key == '3' then
+        gameState = 'Instructions'
+
     elseif key == 'enter' or key == 'return' then
         if gameState == 'serve' then
             gameState = 'play'
@@ -217,6 +220,9 @@ function love.keypressed(key)
             else
                 servingPlayer = 1
             end
+        elseif gameState == 'Instructions' then
+            gameState = 'start'
+        
         end
     end
 end
@@ -237,8 +243,9 @@ function love.draw()
     if gameState == 'start' then
         love.graphics.printf('Welcome to Pong Game!',0,10,virtual_width,'center')
         love.graphics.printf('Select number of Pong players',0,20,virtual_width,'center')
-        love.graphics.printf('Press 1 : For single play',0,30,virtual_width/2,'center')
-        love.graphics.printf('Press 2 : For Multiplay',virtual_width/2,30,virtual_width/2,'center')
+        love.graphics.printf('Press 1 : For single play',0,40,virtual_width/2,'center')
+        love.graphics.printf('Press 2 : For Multiplay',virtual_width/2,40,virtual_width/2,'center')
+        love.graphics.printf('Press 3 : For controls and instructions',0,60,virtual_width,'center')
     elseif gameState == 'serve' then
         love.graphics.printf('Press Enter to serve',0,10,virtual_width,'center')
 
@@ -247,6 +254,17 @@ function love.draw()
         love.graphics.printf('Player '..tostring(winningPlayer)..' wins!! :) ',0,10,virtual_width,'center')
         love.graphics.setFont(smallFont)
         love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
+
+    elseif gameState == 'Instructions' then
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player 1:: Controls',0,20,virtual_width,'left')
+        love.graphics.printf('Player 2:: Controls',virtual_width/2,20,virtual_width/2,'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('w:: To Move paddle up',0,10,virtual_width,'left')
+        love.graphics.printf('d:: To Move paddle down',0,10,virtual_width,'left')
+        love.graphics.printf('up arrow key:: To Move paddle up',0,10,virtual_width,'right')
+        love.graphics.printf('down arrow key:: To Move paddle down',0,10,virtual_width,'right')
+
     end
 
     -- Render paddles using subsequent classes
