@@ -50,6 +50,7 @@ function love.load()
     -- Customized fonts for different information display
     smallFont = love.graphics.newFont('font.ttf',8)
     largeFont = love.graphics.newFont('font.ttf',16)
+    
     scoreFont = love.graphics.newFont('font.ttf',32)
 
     -- set the sound effects, creating a table
@@ -256,14 +257,11 @@ function love.draw()
         love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
 
     elseif gameState == 'Instructions' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Player 1:: Controls',0,20,virtual_width,'left')
-        love.graphics.printf('Player 2:: Controls',virtual_width/2,20,virtual_width/2,'center')
         love.graphics.setFont(smallFont)
-        love.graphics.printf('w:: To Move paddle up',0,10,virtual_width,'left')
-        love.graphics.printf('d:: To Move paddle down',0,10,virtual_width,'left')
-        love.graphics.printf('up arrow key:: To Move paddle up',0,10,virtual_width,'right')
-        love.graphics.printf('down arrow key:: To Move paddle down',0,10,virtual_width,'right')
+        love.graphics.printf('w : To Move paddle up',0,40,virtual_width,'left')
+        love.graphics.printf('d : To Move paddle down',0,60,virtual_width,'left')
+        love.graphics.printf('up arrow key : To Move paddle up',virtual_width/2,40,virtual_width,'center')
+        love.graphics.printf('down arrow key : To Move paddle down',virtual_width/2,60,virtual_width,'center')
 
     end
 
@@ -291,7 +289,17 @@ end
 
 -- Create a new font and display both player's score on screen
 function displayScore()
-    love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score),virtual_width/2-50,virtual_height/3)
-    love.graphics.print(tostring(player2Score),virtual_width/2+30,virtual_height/3)
+
+    if gameState == 'Instructions' then
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player 1 : Controls',0,20,virtual_width,'left')
+        love.graphics.printf('Player 2 : Controls',virtual_width/2,20,virtual_width/2,'center')
+        love.graphics.printf('Press enter to retun',0,80,virtual_width,'center')
+
+    else
+        love.graphics.setFont(scoreFont)
+        love.graphics.print(tostring(player1Score),virtual_width/2-50,virtual_height/3)
+        love.graphics.print(tostring(player2Score),virtual_width/2+30,virtual_height/3)
+    end
+
 end
