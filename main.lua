@@ -257,11 +257,12 @@ function love.draw()
         love.graphics.printf('Press Enter to start a new game',0,40,virtual_width,'center')
 
     elseif gameState == 'Instructions' then
+        player1 = Paddle(1,180,5,20)
         love.graphics.setFont(smallFont)
         love.graphics.printf('w : To Move paddle up',0,40,virtual_width,'left')
         love.graphics.printf('d : To Move paddle down',0,60,virtual_width,'left')
-        love.graphics.printf('up arrow key : To Move paddle up',virtual_width/2,40,virtual_width,'center')
-        love.graphics.printf('down arrow key : To Move paddle down',virtual_width/2,60,virtual_width,'center')
+        love.graphics.printf('up key : To Move paddle up',virtual_width/2,40,virtual_width/2,'center')
+        love.graphics.printf('down key : To Move paddle down',virtual_width/2,60,virtual_width/2,'center')
 
     end
 
